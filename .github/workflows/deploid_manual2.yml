@@ -41,6 +41,7 @@ jobs:
           PASS="${{ secrets.JENKINS_PASS }}"
           AUTH=$(echo -n "$USER:$PASS" | base64)
           CRUMB=$(curl -s -H "Authorization: Basic $AUTH" ${{ vars.JENKINS_URL }}/crumbIssuer/api/json | jq -r .crumb)
+          echo "Crumb obtenido: $CRUMB"
           echo "CRUMB=$CRUMB" >> $GITHUB_OUTPUT
 
       - name: Ejecutar job de Jenkins
