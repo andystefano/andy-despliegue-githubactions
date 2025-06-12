@@ -43,6 +43,8 @@ jobs:
           CRUMB_JSON=$(curl -s -H "Authorization: Basic $AUTH" "${{ vars.JENKINS_URL }}/crumbIssuer/api/json")
           CRUMB_FIELD=$(echo "$CRUMB_JSON" | jq -r '.crumbRequestField')
           CRUMB_VALUE=$(echo "$CRUMB_JSON" | jq -r '.crumb')
+          echo "CRUMB_FIELD obtenido: $CRUMB_FIELD"
+          echo "CRUMB_VALUE obtenido: $CRUMB_VALUE"
           echo "CRUMB_FIELD=$CRUMB_FIELD" >> $GITHUB_OUTPUT
           echo "CRUMB_VALUE=$CRUMB_VALUE" >> $GITHUB_OUTPUT
 
