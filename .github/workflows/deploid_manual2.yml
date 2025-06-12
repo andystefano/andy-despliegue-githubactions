@@ -51,6 +51,7 @@ jobs:
       - name: Ejecutar job de Jenkins
         run: |
           echo "Ejecutando job de Jenkins..."
+          echo "curl -X POST \"${{ vars.JENKINS_URL }}/job/${{ steps.vars.outputs.PROJECT }}/buildWithParameters\" --user \"${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_PASS }}\" -H \"${{ steps.crumb.outputs.CRUMB_FIELD }}: ${{ steps.crumb.outputs.CRUMB_VALUE }}\" --data-urlencode \"branch=${{ steps.vars.outputs.BRANCH }}\" --data-urlencode \"entorno=${{ steps.vars.outputs.ENTORNO }}\" --data-urlencode \"servidor=${{ inputs.servidor }}\" --data-urlencode \"${{ steps.crumb.outputs.CRUMB_FIELD }}=${{ steps.crumb.outputs.CRUMB_VALUE }}\""
           curl -X POST "${{ vars.JENKINS_URL }}/job/${{ steps.vars.outputs.PROJECT }}/buildWithParameters" \
             --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_PASS }}" \
             -H "${{ steps.crumb.outputs.CRUMB_FIELD }}: ${{ steps.crumb.outputs.CRUMB_VALUE }}" \
