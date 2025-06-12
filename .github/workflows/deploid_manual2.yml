@@ -37,7 +37,7 @@ jobs:
       - name: Ejecutar job de Jenkins
         run: |
           echo "Ejecutando job de Jenkins con API Token..."
-          echo "Deploid ${{ steps.vars.outputs.BRANCH }} ${{ steps.vars.outputs.ENTORNO }} ${{ inputs.servidor }}"
+          echo "Deploid rama:${{ steps.vars.outputs.BRANCH }} entorno:${{ steps.vars.outputs.ENTORNO }} servidor:${{ inputs.servidor }}"
           curl -X POST "${{ vars.JENKINS_URL }}/job/${{ steps.vars.outputs.PROJECT }}/buildWithParameters" \
             --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_TOKEN }}" \
             --data-urlencode "BRANCH=${{ steps.vars.outputs.BRANCH }}" \
