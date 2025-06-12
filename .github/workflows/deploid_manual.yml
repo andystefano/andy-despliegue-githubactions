@@ -1,0 +1,45 @@
+name: 🚀 Deploy Manual
+
+on:
+  workflow_dispatch:
+    inputs:
+      servidor:
+        description: '🖥️ Servidor de despliegue'
+        required: true
+        type: choice
+        options:
+          - des
+          - devqa
+      entorno:
+        description: '🌍 Entorno'
+        required: true
+        type: choice
+        options:
+          - PRD
+          - DES
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Definir variables de entorno
+        id: vars
+        run: |
+          if [ "${{ inputs.servidor }}" = "des" ]; then
+            echo "PROJECT=DeployDes" >> $GITHUB_OUTPUT
+          elif [ "${{ inputs.servidor }}" = "devqa" ]; then
+            echo "PROJECT=DeployDevQA" >> $GITHUB_OUTPUT
+          fi
+          echo "ENTORNO=${{ inputs.entorno }}" >> $GITHUB_OUTPUT
+          echo "BRANCH=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+
+      - name: Ejecutar job de Jenkins
+        run: |
+          echo "Ejecutando job de Jenkins con API Token..."
+          echo "Deploid rama:${{ steps.vars.outputs.BRANCH }} entorno:${{ steps.vars.outputs.ENTORNO }} servidor:${{ inputs.servidor }}"
+          curl -X POST "${{ vars.JENKINS_URL }}/job/${{ steps.vars.outputs.PROJECT }}/buildWithParameters" \
+            --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_TOKEN }}" \
+            --data-urlencode "BRANCH=${{ steps.vars.outputs.BRANCH }}" \
+            --data-urlencode "ENTORNO=${{ steps.vars.outputs.ENTORNO }}" \
+            --data-urlencode "SERVIDOR=${{ inputs.servidor }}"
