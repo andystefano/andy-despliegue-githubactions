@@ -1,4 +1,4 @@
-name: Deploy Manual  des devqa
+name: Deploy Manual  DES | DEVQA
 
 on:
   workflow_dispatch:
