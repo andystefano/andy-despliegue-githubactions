@@ -37,17 +37,17 @@ jobs:
       - name: Obtener Crumb de Jenkins
         id: crumb
         run: |
-          USER="${{ secrets.JENKINS_USER }}"
-          PASS="${{ secrets.JENKINS_PASS }}"
-          AUTH=$(echo -n "$USER:$PASS" | base64)
+          TOKEN="${{ secrets.JENKINS_TOKEN }}"
+          AUTH=$(echo -n ":$TOKEN" | base64)
           CRUMB=$(curl -s -H "Authorization: Basic $AUTH" ${{ vars.JENKINS_URL }}/crumbIssuer/api/json | jq -r .crumb)
           echo "CRUMB=$CRUMB" >> $GITHUB_OUTPUT
 
       - name: Ejecutar job de Jenkins
         run: |
           curl -X POST "${{ vars.JENKINS_URL }}/job/${{ steps.vars.outputs.PROJECT }}/buildWithParameters" \
-            --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_PASS }}" \
+            --user ":${{ secrets.JENKINS_TOKEN }}" \
             -H "Jenkins-Crumb: ${{ steps.crumb.outputs.CRUMB }}" \
             --data-urlencode "branch=${{ steps.vars.outputs.BRANCH }}" \
             --data-urlencode "entorno=${{ steps.vars.outputs.ENTORNO }}" \
             --data-urlencode "servidor=${{ inputs.servidor }}"
+            
