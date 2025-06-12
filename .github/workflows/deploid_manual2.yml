@@ -56,5 +56,5 @@ jobs:
             -H "${{ steps.crumb.outputs.CRUMB_FIELD }}: ${{ steps.crumb.outputs.CRUMB_VALUE }}" \
             --data-urlencode "branch=${{ steps.vars.outputs.BRANCH }}" \
             --data-urlencode "entorno=${{ steps.vars.outputs.ENTORNO }}" \
-            --data-urlencode "servidor=${{ inputs.servidor }}"
+            --data-urlencode "servidor=${{ inputs.servidor }}" \
             --data-urlencode "${{ steps.crumb.outputs.CRUMB_FIELD }}=${{ steps.crumb.outputs.CRUMB_VALUE }}"
