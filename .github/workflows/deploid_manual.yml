@@ -1,17 +1,17 @@
-name: Deploy Manual  DES | DEVQA
+name: 🚀 Deploy Manual
 
 on:
   workflow_dispatch:
     inputs:
       servidor:
-        description: 'Servidor'
+        description: '🖥️ Servidor de despliegue'
         required: true
         type: choice
         options:
           - des
           - devqa
       entorno:
-        description: 'Entorno'
+        description: '🌍 Entorno'
         required: true
         type: choice
         options:
