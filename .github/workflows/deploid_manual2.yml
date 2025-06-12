@@ -40,12 +40,12 @@ jobs:
           USER="${{ secrets.JENKINS_USER }}"
           PASS="${{ secrets.JENKINS_PASS }}"
           AUTH=$(echo -n "$USER:$PASS" | base64)
-          CRUMB=$(curl -s -H "Authorization: Basic $AUTH" http://andy.cl:8080/crumbIssuer/api/json | jq -r .crumb)
+          CRUMB=$(curl -s -H "Authorization: Basic $AUTH" ${{ vars.JENKINS_URL }}/crumbIssuer/api/json | jq -r .crumb)
           echo "CRUMB=$CRUMB" >> $GITHUB_OUTPUT
 
       - name: Ejecutar job de Jenkins
         run: |
-          curl -X POST "http://andy.cl:8080/job/${{ steps.vars.outputs.PROJECT }}/buildWithParameters" \
+          curl -X POST "${{ vars.JENKINS_URL }}/job/${{ steps.vars.outputs.PROJECT }}/buildWithParameters" \
             --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_PASS }}" \
             -H "Jenkins-Crumb: ${{ steps.crumb.outputs.CRUMB }}" \
             --data-urlencode "branch=${{ steps.vars.outputs.BRANCH }}" \
